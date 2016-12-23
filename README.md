@@ -3,8 +3,9 @@
 ## Installation
 
 ### Dependencies
-- mencoder
-- avconv (only for creating mp4 movies)
+- [Python 2.7](https://www.python.org/download/releases/2.7/)
+- [mencoder](http://www.mplayerhq.hu/design7/news.html)
+- [libav](https://libav.org/) (only for creating mp4 movies)
 
 ### Set up as command line program
 1. Make script executable:
