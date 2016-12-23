@@ -1,22 +1,34 @@
-#!/usr/bin/python
-# *******************************************************************#
-# written by: Margriet Palm (21-09-09)		                        #
-# -------------------------------------------------------------------#
-# last edit: 15-05-14                                               #
-#                                                                   #
-# Simple python script to convert a series of png files to a movie  #
-# using mplayer                                                     #
-# Default settings and options are based on:                        #
-# http://personal.cscs.ch/~mvalle/mencoder/mencoder.html            #
-#                                                                   #
-# Add support for other file types                                  #
-# *******************************************************************#
+#!/usr/bin/env python
+"""Create movie from a series of images using mencoder
+
+The MIT License (MIT)
+Copyright (c) 2009 Margriet Palm
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+- The above copyright notice and this permission notice shall be included in all copies or substantial
+  portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+"""
 
 from optparse import OptionParser
 import sys
 import os
 import glob
 
+__author__ = "Margriet Palm"
+__copyright__ = "Copyright 2009"
+__credits__ = "Margriet Palm"
+__license__ = "MIT"
+__version__ = "0.1"
+__maintainer__ = "Margriet Palm"
 
 def parse_args():
     # read arguments
@@ -147,7 +159,6 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
     # run mencoder
     os.system(' '.join(command))
     if tomp4:
-        #        print 'avconv -i '+outputpath+moviename+suffix+' -c:v libx264 '+outputpath+moviename+'.mp4'
         os.system(
             'avconv -i ' + outputpath + moviename + suffix + ' -y -c:v libx264 ' + outputpath + moviename + '.mp4')
 
