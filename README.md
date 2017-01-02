@@ -15,8 +15,7 @@
 3. Now you can run the script with `im2movie`
 
 ### Python library
-1. Install dependencies (see above)
-2. Place `im2movie` folder in the python path
+Place the `im2movie` folder in the python path.
 
 
 ## Usage
