@@ -108,8 +108,7 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
         moviename += '_' + postfix
     if bitrate is None:
         if (nx is None) or (ny is None):
-            sample = glob.glob(inputpath + id + '*.' + imtype)[0]
-            #            print glob.glob(inputpath+id+'*.'+imtype)
+            sample = glob.glob(inputpath+id+'*'+postfix+'.'+imtype)[0]
             try:
                 from PIL import Image
             except:
@@ -131,7 +130,7 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
     if not quiet:
         print "movie bitrate:\t\t" + str(bitrate)
         print "movie dimensions:\t\t" + str(snx) + 'x' + str(sny)
-        print "use image files in:\t" + inputpath + id + "*." + imtype
+        print "use image files in:\t" + inputpath + id + "*" + postfix + "." + imtype
         print "save movie to:\t\t" + outputpath + moviename + suffix
     # command to run mencoder
     command = ["mencoder", "-really-quiet", shellquote("mf://"+inputpath+id+"*"+postfix+"."+imtype), "-mf",
