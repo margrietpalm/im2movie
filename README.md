@@ -70,3 +70,7 @@ Options:
                         [12]
   --mp4
 ```
+
+## Acknowledgements
+
+Thanks to [Gerhard Burger](https://github.com/burgerga) for adding several improvements.
