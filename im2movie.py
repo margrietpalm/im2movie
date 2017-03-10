@@ -95,7 +95,7 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
         imtype = 'png'
         if not quiet:
             print 'unsuported image type -> im2movie will convert all images to png'
-        os.system('mogrify -format png ' + inputpath + id + '*.' + imtype)
+        os.system('mogrify -format png -depth 8 ' + shellquote(inputpath + id + '*' + postfix + '.' + imtype))
     if not inputpath.endswith('/'):
         inputpath += '/'
     if not outputpath.endswith('/'):
