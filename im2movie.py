@@ -61,16 +61,18 @@ def parse_args():
         options.moviename = options.id
     return options
 
+def shellquote(s):
+    return "'" + s.replace("'", "'\\''") + "'"
 
 def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=None, bitrate=None, scale=1, quiet=True,
               win=False,vqscale=12, suffix='.avi', tomp4=False, postfix=None, maxres=(2000, 2000)):
     """ Creates movie of a series of images.
-    
+
     Creates a movie of a series of images using mencoder. The images are added to the movie in alphabetical order. If the png's are numbered, all numbers should contain the same number of digits, e.g.:
         - order of [im_1.png,im_10.png] = [im_10.png,im_1.png]
         - order of [im_01.png,im_10.png] = [im_01.png,im_10.png]
     By defeault the mpeg4 codec is used for the movies, alternatively the msmpeg4v2 codec can be used (see Args).
-    
+
     Args:
         id: unique identifier for the images
         moviename: name of the generated movie (without suffix)
@@ -132,19 +134,17 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
         print "use image files in:\t" + inputpath + id + "*." + imtype
         print "save movie to:\t\t" + outputpath + moviename + suffix
     # command to run mencoder
-    command = ["mencoder", "-really-quiet", "mf://" + inputpath + id + "*" + postfix + "." + imtype + " -mf",
-               "w=" + str(nx) + ":h=" + str(ny) + ":fps=" + str(fps) + ":type=" + str(imtype), "-ovc",
-               "lavc", "-lavcopts", "vcodec=" + str(codec) + ":vqscale=" + str(vqscale) + ":mbd=2:vbitrate=" +
-               str(bitrate) + ":trell", "-oac", "copy", "-vf", "scale=" + str(snx) + ":" + str(sny), "-o",
-               outputpath + moviename + suffix]
+    command = ["mencoder", "-really-quiet", shellquote("mf://"+inputpath+id+"*"+postfix+"."+imtype), "-mf",
+               "w=" + str(nx) + ":h=" + str(ny) + ":fps="+str(fps)+":type="+str(imtype), "-ovc", "lavc",
+               "-lavcopts", "vcodec="+str(codec)+":vqscale="+str(vqscale)+":mbd=2:vbitrate="+str(bitrate)+":trell",
+               "-oac", "copy", "-vf", "scale="+str(snx)+":"+str(sny), "-o", shellquote(outputpath+moviename+suffix)]
     #    print ' '.join(command)
     # ~ print command.
     # run mencoder
     os.system(' '.join(command))
     if tomp4:
-        os.system(
-            'avconv -i ' + outputpath + moviename + suffix + ' -y -c:v libx264 ' + outputpath + moviename + '.mp4')
-
+        os.system('avconv -i ' + shellquote(outputpath + moviename + suffix) + ' -y -c:v libx264 ' +
+                  shellquote(outputpath + moviename + '.mp4'))
 
 def main():
     # get command-line arguments
