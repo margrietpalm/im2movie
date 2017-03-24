@@ -33,7 +33,7 @@ def parse_args():
                       help="output folder [%default]")
     parser.add_option("-p", "--id", type="string", dest="id", default="",
                       help="first part of the filenames (should be unique to the sequence that is to be converted)")
-    parser.add_option("--postfix", type="string", dest="postfix", default="",
+    parser.add_option("--postfix", type="string", dest="postfix",
                       help="part of the filename that follow the image number (only needed whed 'id' "
                            "does not suffice to select the right images")
     parser.add_option("-m", "--moviename", type="string", dest="moviename",
