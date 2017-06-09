@@ -5,6 +5,7 @@ from optparse import OptionParser
 import sys
 import os
 import glob
+import future
 
 __author__ = "Margriet Palm"
 __copyright__ = "Copyright 2009"
@@ -94,7 +95,7 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
     if imtype not in ['png', 'jpg']:
         imtype = 'png'
         if not quiet:
-            print 'unsuported image type -> im2movie will convert all images to png'
+            print('unsuported image type -> im2movie will convert all images to png')
         os.system('mogrify -format png -depth 8 ' + shellquote(inputpath + id + '*' + postfix + '.' + imtype))
     if not inputpath.endswith('/'):
         inputpath += '/'
@@ -128,10 +129,10 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
     if win:
         codec = 'msmpeg4v2'
     if not quiet:
-        print "movie bitrate:\t\t" + str(bitrate)
-        print "movie dimensions:\t\t" + str(snx) + 'x' + str(sny)
-        print "use image files in:\t" + inputpath + id + "*" + postfix + "." + imtype
-        print "save movie to:\t\t" + outputpath + moviename + suffix
+        print("movie bitrate:\t\t" + str(bitrate))
+        print("movie dimensions:\t\t" + str(snx) + 'x' + str(sny))
+        print("use image files in:\t" + inputpath + id + "*" + postfix + "." + imtype)
+        print("save movie to:\t\t" + outputpath + moviename + suffix)
     # command to run mencoder
     command = ["mencoder", "-really-quiet", shellquote("mf://"+inputpath+id+"*"+postfix+"."+imtype), "-mf",
                "w=" + str(nx) + ":h=" + str(ny) + ":fps="+str(fps)+":type="+str(imtype), "-ovc", "lavc",
