@@ -138,7 +138,7 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
                "w=" + str(nx) + ":h=" + str(ny) + ":fps="+str(fps)+":type="+str(imtype), "-ovc", "lavc",
                "-lavcopts", "vcodec="+str(codec)+":vqscale="+str(vqscale)+":mbd=2:vbitrate="+str(bitrate)+":trell",
                "-oac", "copy", "-vf", "scale="+str(snx)+":"+str(sny), "-o", shellquote(outputpath+moviename+suffix)]
-    #    print ' '.join(command)
+    # print ' '.join(command)
     # ~ print command.
     # run mencoder
     os.system(' '.join(command))
