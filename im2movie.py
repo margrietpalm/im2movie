@@ -114,7 +114,7 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
                 from PIL import Image
             except:
                 sys.exit("Could not calculate image size with PIL")
-            (nx, ny) = Image.open(open(sample)).size
+            (nx, ny) = Image.open(sample).size
         bitrate = nx * ny * 25 * 50 / 256
     if bitrate > 24000000:
         bitrate = 24000000
