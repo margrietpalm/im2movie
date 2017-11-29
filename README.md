@@ -12,7 +12,7 @@
 1. Make script executable:
     ```chmod +x im2movie.py```
 2. Create a link to `im2movie` in a folder in your `PATH`. For example, when you have a `bin` folder in your home
- that is in your `PATH`: `ln -s /path/to/VisGrid3D/im2movie.py /home/USERNAME/bin/im2movie`
+ that is in your `PATH`: `ln -s /path/to/im2movie/im2movie.py /home/USERNAME/bin/im2movie`
 3. Now you can run the script with `im2movie`
 
 ### Python library
