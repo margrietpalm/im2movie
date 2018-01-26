@@ -115,7 +115,7 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
             except:
                 sys.exit("Could not calculate image size with PIL")
             (nx, ny) = Image.open(sample).size
-        bitrate = nx * ny * 25 * 50 / 256
+        bitrate = int(nx * ny * 25 * 50 / 256)
     if bitrate > 24000000:
         bitrate = 24000000
     # print some info
@@ -138,7 +138,6 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
                "w=" + str(nx) + ":h=" + str(ny) + ":fps="+str(fps)+":type="+str(imtype), "-ovc", "lavc",
                "-lavcopts", "vcodec="+str(codec)+":vqscale="+str(vqscale)+":mbd=2:vbitrate="+str(bitrate)+":trell",
                "-oac", "copy", "-vf", "scale="+str(snx)+":"+str(sny), "-o", shellquote(outputpath+moviename+suffix)]
-    # print ' '.join(command)
     # ~ print command.
     # run mencoder
     os.system(' '.join(command))
