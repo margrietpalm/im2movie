@@ -93,10 +93,10 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
         maxres: maximum movie resolution
     """
     if imtype not in ['png', 'jpg']:
-        imtype = 'png'
         if not quiet:
             print('unsuported image type -> im2movie will convert all images to png')
         os.system('mogrify -format png -depth 8 ' + shellquote(inputpath + id + '*' + postfix + '.' + imtype))
+        imtype = 'png'        
     if not inputpath.endswith('/'):
         inputpath += '/'
     if not outputpath.endswith('/'):
