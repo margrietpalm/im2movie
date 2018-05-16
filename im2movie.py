@@ -14,6 +14,7 @@ __license__ = "MIT"
 __version__ = "0.1"
 __maintainer__ = "Margriet Palm"
 
+
 def parse_args():
     # read arguments
     args = sys.argv
@@ -62,11 +63,13 @@ def parse_args():
         options.moviename = options.id
     return options
 
+
 def shellquote(s):
     return "'" + s.replace("'", "'\\''") + "'"
 
+
 def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=None, bitrate=None, scale=1, quiet=True,
-              win=False,vqscale=12, suffix='.avi', tomp4=False, postfix=None, maxres=(2000, 2000)):
+              win=False, vqscale=12, suffix='.avi', tomp4=False, postfix=None, maxres=(2000, 2000)):
     """ Creates movie of a series of images.
 
     Creates a movie of a series of images using mencoder. The images are added to the movie in alphabetical order. If the png's are numbered, all numbers should contain the same number of digits, e.g.:
@@ -96,7 +99,7 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
         if not quiet:
             print('unsuported image type -> im2movie will convert all images to png')
         os.system('mogrify -format png -depth 8 ' + shellquote(inputpath + id + '*' + postfix + '.' + imtype))
-        imtype = 'png'        
+        imtype = 'png'
     if not inputpath.endswith('/'):
         inputpath += '/'
     if not outputpath.endswith('/'):
@@ -109,7 +112,7 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
         moviename += '_' + postfix
     if bitrate is None:
         if (nx is None) or (ny is None):
-            sample = glob.glob(inputpath+id+'*'+postfix+'.'+imtype)[0]
+            sample = glob.glob(inputpath + id + '*' + postfix + '.' + imtype)[0]
             try:
                 from PIL import Image
             except:
@@ -134,16 +137,19 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
         print("use image files in:\t" + inputpath + id + "*" + postfix + "." + imtype)
         print("save movie to:\t\t" + outputpath + moviename + suffix)
     # command to run mencoder
-    command = ["mencoder", "-really-quiet", shellquote("mf://"+inputpath+id+"*"+postfix+"."+imtype), "-mf",
-               "w=" + str(nx) + ":h=" + str(ny) + ":fps="+str(fps)+":type="+str(imtype), "-ovc", "lavc",
-               "-lavcopts", "vcodec="+str(codec)+":vqscale="+str(vqscale)+":mbd=2:vbitrate="+str(bitrate)+":trell",
-               "-oac", "copy", "-vf", "scale="+str(snx)+":"+str(sny), "-o", shellquote(outputpath+moviename+suffix)]
+    command = ["mencoder", "-really-quiet", shellquote("mf://" + inputpath + id + "*" + postfix + "." + imtype), "-mf",
+               "w=" + str(nx) + ":h=" + str(ny) + ":fps=" + str(fps) + ":type=" + str(imtype), "-ovc", "lavc",
+               "-lavcopts",
+               "vcodec=" + str(codec) + ":vqscale=" + str(vqscale) + ":mbd=2:vbitrate=" + str(bitrate) + ":trell",
+               "-oac", "copy", "-vf", "scale=" + str(snx) + ":" + str(sny), "-o",
+               shellquote(outputpath + moviename + suffix)]
     # ~ print command.
     # run mencoder
     os.system(' '.join(command))
     if tomp4:
         os.system('avconv -i ' + shellquote(outputpath + moviename + suffix) + ' -y -c:v libx264 ' +
                   shellquote(outputpath + moviename + '.mp4'))
+
 
 def main():
     # get command-line arguments
