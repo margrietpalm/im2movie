@@ -18,8 +18,6 @@ __maintainer__ = "Margriet Palm"
 def parse_args():
     # read arguments
     args = sys.argv
-    # create option parser
-    # used: q,i,o,p,m,f,w
     usage = "usage: %prog [options]"
     description = "im2movie creates a small but decent movie from a set of images ussing mencoder. " \
                   "Note that the images are added to the movie in the order they appear in the directory, " \
@@ -143,10 +141,8 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
                "vcodec=" + str(codec) + ":vqscale=" + str(vqscale) + ":mbd=2:vbitrate=" + str(bitrate) + ":trell",
                "-oac", "copy", "-vf", "scale=" + str(snx) + ":" + str(sny), "-o",
                shellquote(outputpath + moviename + suffix)]
-    # ~ print command.
     # run mencoder
     os.system(' '.join(command))
-    print(command)
     if tomp4:
         os.system('avconv -i ' + shellquote(outputpath + moviename + suffix) + ' -y -c:v libx264 ' +
                   shellquote(outputpath + moviename + '.mp4'))
