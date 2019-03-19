@@ -95,11 +95,6 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
         postifx: video postfix
         maxres: maximum movie resolution
     """
-    if imtype not in ['png', 'jpg']:
-        if not quiet:
-            print('unsuported image type -> im2movie will convert all images to png')
-        os.system('mogrify -format png -depth 8 ' + shellquote(inputpath + id + '*' + postfix + '.' + imtype))
-        imtype = 'png'
     if not inputpath.endswith('/'):
         inputpath += '/'
     if not outputpath.endswith('/'):
@@ -108,6 +103,11 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
         suffix = '.' + suffix
     if postfix is None:
         postfix = ''
+    if imtype not in ['png', 'jpg']:
+        if not quiet:
+            print('unsuported image type -> im2movie will convert all images to png')
+        os.system('mogrify -format png -depth 8 ' + shellquote(inputpath + id + '*' + postfix + '.' + imtype))
+        imtype = 'png'
     else:
         moviename += '_' + postfix
     if bitrate is None:
@@ -146,6 +146,7 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
     # ~ print command.
     # run mencoder
     os.system(' '.join(command))
+    print(command)
     if tomp4:
         os.system('avconv -i ' + shellquote(outputpath + moviename + suffix) + ' -y -c:v libx264 ' +
                   shellquote(outputpath + moviename + '.mp4'))

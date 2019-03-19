@@ -16,8 +16,8 @@
  that is in your `PATH`: `ln -s /path/to/im2movie/im2movie.py /home/USERNAME/bin/im2movie`
 3. Now you can run the script with `im2movie`
 
-### Python library
 When the `im2movie` folder is in the python path, you can use the `makeMovie` function:
+### Python library
 
 ```
 from im2movie import makeMovie
