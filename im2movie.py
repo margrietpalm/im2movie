@@ -106,8 +106,6 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
             print('unsuported image type -> im2movie will convert all images to png')
         os.system('mogrify -format png -depth 8 ' + shellquote(inputpath + id + '*' + postfix + '.' + imtype))
         imtype = 'png'
-    else:
-        moviename += '_' + postfix
     if bitrate is None:
         if (nx is None) or (ny is None):
             sample = glob.glob(inputpath + id + '*' + postfix + '.' + imtype)[0]
