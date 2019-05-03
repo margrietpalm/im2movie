@@ -6,6 +6,7 @@ import sys
 import os
 import glob
 import future
+import shutil
 
 __author__ = "Margriet Palm"
 __copyright__ = "Copyright 2009"
@@ -138,13 +139,19 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
                "-lavcopts",
                "vcodec=" + str(codec) + ":vqscale=" + str(vqscale) + ":mbd=2:vbitrate=" + str(bitrate) + ":trell",
                "-oac", "copy", "-vf", "scale=" + str(snx) + ":" + str(sny), "-o",
-               shellquote(outputpath + moviename + suffix)]
+               shellquote(outputpath+moviename+suffix)]
     # run mencoder
     os.system(' '.join(command))
+    # convert to mp4
     if tomp4:
-        os.system('avconv -i ' + shellquote(outputpath + moviename + suffix) + ' -y -c:v libx264 ' +
-                  shellquote(outputpath + moviename + '.mp4'))
-
+        if shutil.which('avconv') is not None:
+            converter = 'avconv'
+        elif shutil.which('ffmpeg') is not None:
+            converter = 'ffmpeg'
+        else:
+            print('could not find ffmpeg or avconv')
+        cmd_mp4 = '{0} -i {1}{2} -y -c:v libx264 {1}.mp4'.format(converter,outputpath + moviename, suffix)
+        os.system(cmd_mp4)
 
 def main():
     # get command-line arguments
