@@ -134,14 +134,16 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
         print("use image files in:\t" + inputpath + id + "*" + postfix + "." + imtype)
         print("save movie to:\t\t" + outputpath + moviename + suffix)
     # command to run mencoder
-    command = ["mencoder", "-really-quiet", shellquote("mf://" + inputpath + id + "*" + postfix + "." + imtype), "-mf",
+    command = ' '.join(["mencoder", "-really-quiet", shellquote("mf://" + inputpath + id + "*" + postfix + "." + imtype), "-mf",
                "w=" + str(nx) + ":h=" + str(ny) + ":fps=" + str(fps) + ":type=" + str(imtype), "-ovc", "lavc",
                "-lavcopts",
                "vcodec=" + str(codec) + ":vqscale=" + str(vqscale) + ":mbd=2:vbitrate=" + str(bitrate) + ":trell",
                "-oac", "copy", "-vf", "scale=" + str(snx) + ":" + str(sny), "-o",
-               shellquote(outputpath+moviename+suffix)]
+               shellquote(outputpath+moviename+suffix)])
     # run mencoder
-    os.system(' '.join(command))
+    if quiet:
+        command += ' > /dev/null 2> /dev/null'
+    os.system(command)
     # convert to mp4
     if tomp4:
         if shutil.which('avconv') is not None:
@@ -151,6 +153,8 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
         else:
             print('could not find ffmpeg or avconv')
         cmd_mp4 = '{0} -i {1}{2} -y -c:v libx264 {1}.mp4'.format(converter,outputpath + moviename, suffix)
+        if quiet:
+            cmd_mp4 += ' > /dev/null 2> /dev/null'
         os.system(cmd_mp4)
 
 def main():
