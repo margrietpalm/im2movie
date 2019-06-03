@@ -7,6 +7,8 @@ import os
 import glob
 import future
 import shutil
+from pathlib import Path
+
 
 __author__ = "Margriet Palm"
 __copyright__ = "Copyright 2009"
@@ -94,10 +96,10 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
         postifx: video postfix
         maxres: maximum movie resolution
     """
-    if not inputpath.endswith('/'):
-        inputpath += '/'
-    if not outputpath.endswith('/'):
-        outputpath += '/'
+    if not isinstance(inputpath,(Path,)):
+        inputpath = Path(inputpath)
+    if not isinstance(outputpath,(Path,)):
+        outputpath = Path(outputpath)
     if not suffix.startswith('.'):
         suffix = '.' + suffix
     if postfix is None:
@@ -109,7 +111,7 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
         imtype = 'png'
     if bitrate is None:
         if (nx is None) or (ny is None):
-            sample = glob.glob(inputpath + id + '*' + postfix + '.' + imtype)[0]
+            sample = list(inputpath.glob(f'{id}*{postfix}.{imtype}'))[0]
             try:
                 from PIL import Image
             except:
@@ -131,15 +133,15 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
     if not quiet:
         print("movie bitrate:\t\t" + str(bitrate))
         print("movie dimensions:\t\t" + str(snx) + 'x' + str(sny))
-        print("use image files in:\t" + inputpath + id + "*" + postfix + "." + imtype)
-        print("save movie to:\t\t" + outputpath + moviename + suffix)
+        print("use image files in:\t" + str(inputpath) + id + "*" + postfix + "." + imtype)
+        print("save movie to:\t\t" + str(outputpath) + "/" + moviename + suffix)
     # command to run mencoder
-    command = ' '.join(["mencoder", "-really-quiet", shellquote("mf://" + inputpath + id + "*" + postfix + "." + imtype), "-mf",
+    command = ' '.join(["mencoder", "-really-quiet", shellquote("mf://" + str(inputpath) + "/" + id + "*" + postfix + "." + imtype), "-mf",
                "w=" + str(nx) + ":h=" + str(ny) + ":fps=" + str(fps) + ":type=" + str(imtype), "-ovc", "lavc",
                "-lavcopts",
                "vcodec=" + str(codec) + ":vqscale=" + str(vqscale) + ":mbd=2:vbitrate=" + str(bitrate) + ":trell",
                "-oac", "copy", "-vf", "scale=" + str(snx) + ":" + str(sny), "-o",
-               shellquote(outputpath+moviename+suffix)])
+               shellquote(str(outputpath)+"/"+moviename+suffix)])
     # run mencoder
     if quiet:
         command += ' > /dev/null 2> /dev/null'
@@ -152,7 +154,7 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
             converter = 'ffmpeg'
         else:
             print('could not find ffmpeg or avconv')
-        cmd_mp4 = '{0} -i {1}{2} -y -c:v libx264 {1}.mp4'.format(converter,outputpath + moviename, suffix)
+        cmd_mp4 = '{0} -i {1}/{2} -y -c:v libx264 {1}.mp4'.format(converter,str(outputpath) + moviename, suffix)
         if quiet:
             cmd_mp4 += ' > /dev/null 2> /dev/null'
         os.system(cmd_mp4)
@@ -160,12 +162,7 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
 def main():
     # get command-line arguments
     opt = parse_args()
-    # check arguments
-    if not opt.inputpath.endswith('/'):
-        opt.inputpath += '/'
-    if not opt.outputpath.endswith('/'):
-        opt.outputpath += '/'
-    makeMovie(opt.id, opt.imtype, opt.moviename, opt.inputpath, opt.outputpath, opt.fps, nx=opt.nx, ny=opt.ny,
+    makeMovie(opt.id, opt.imtype, opt.moviename, Path(inputpath), Path(outputpath), opt.fps, nx=opt.nx, ny=opt.ny,
               bitrate=opt.bitrate, scale=opt.scale, quiet=opt.quiet, win=opt.win, vqscale=opt.vqscale, tomp4=opt.mp4,
               postfix=opt.postfix)
 
