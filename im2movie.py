@@ -162,7 +162,8 @@ def makeMovie(id, imtype, moviename, inputpath, outputpath, fps, nx=None, ny=Non
 def main():
     # get command-line arguments
     opt = parse_args()
-    makeMovie(opt.id, opt.imtype, opt.moviename, Path(inputpath), Path(outputpath), opt.fps, nx=opt.nx, ny=opt.ny,
+    makeMovie(opt.id, opt.imtype, opt.moviename, Path(opt.inputpath),
+              Path(opt.outputpath), opt.fps, nx=opt.nx, ny=opt.ny,
               bitrate=opt.bitrate, scale=opt.scale, quiet=opt.quiet, win=opt.win, vqscale=opt.vqscale, tomp4=opt.mp4,
               postfix=opt.postfix)
 
